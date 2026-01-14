@@ -11,44 +11,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 import { useState, ChangeEvent, FormEvent } from "react";
 
 type RegisterFormData = {
-  name: string;
   email: string;
   password: string;
-  image: File | null;
 };
 
-const RegisterPage = () => {
+const LoginPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState<RegisterFormData>({
-    name: "",
     email: "",
     password: "",
-    image: null,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("From form data", formData);
+
     try {
-      const { data, error } = await authClient.signUp.email({
-        name: formData.name,
-        email: formData.email,
+      const { data, error } = await authClient.signIn.email({
+        email: formData.email.trim(),
         password: formData.password,
+        rememberMe: true,
       });
-      console.log("From data", data, error);
-    } catch (error) {
-      console.log(error);
+
+      if (error) {
+        console.error("Login failed:", error.message || error);
+        return;
+      }
+
+      if (data?.redirect) {
+        console.log("Login successful:", data);
+        router.push("/");
+      }
+    } catch (err) {
+      console.error("Unexpected error during login:", err);
     }
   };
 
@@ -56,24 +64,10 @@ const RegisterPage = () => {
     <div className="h-screen flex items-center justify-center">
       <Card className="w-100 mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl mx-auto">Register</CardTitle>
+          <CardTitle className="text-2xl mx-auto">Please Login</CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor="name" className="mb-2">
-                Name
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Your full name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
             <div>
               <Label htmlFor="email" className="mb-2">
                 Email
@@ -102,22 +96,10 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div>
-              <Label htmlFor="image" className="mb-2">
-                Image
-              </Label>
-              <Input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-            </div>
           </CardContent>
           <CardFooter className="mt-2">
             <Button type="submit" className="w-full">
-              Create Account
+              Login
             </Button>
           </CardFooter>
         </form>
@@ -126,4 +108,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

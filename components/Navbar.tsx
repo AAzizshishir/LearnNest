@@ -22,6 +22,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import LearNestlogo from "@/public/learn_nest_logo.jpg";
+import { ModeToggle } from "./ModeToggle";
+import { signOut, useSession } from "@/lib/auth-client";
 
 interface MenuItem {
   title: string;
@@ -77,6 +79,7 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const { data: session } = useSession();
   return (
     <section className={cn("py-4", className)}>
       <div className="container mx-auto">
@@ -105,12 +108,22 @@ const Navbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <Link href={auth.login.url}>{auth.login.title}</Link>
-            </Button>
-            <Button asChild size="sm">
-              <Link href={auth.signup.url}>{auth.signup.title}</Link>
-            </Button>
+            <ModeToggle />
+            {session ? (
+              <>
+                <span>Welcome, {session.user.email}</span>
+                <Button onClick={() => signOut()}>Logout</Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
+                </Button>
+                <Button asChild size="sm">
+                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
 
@@ -157,6 +170,7 @@ const Navbar = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
+                    <ModeToggle />
                     <Button asChild variant="outline">
                       <Link href={auth.login.url}>{auth.login.title}</Link>
                     </Button>
