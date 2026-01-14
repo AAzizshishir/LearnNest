@@ -11,8 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 import { useState, ChangeEvent, FormEvent } from "react";
+import toast from "react-hot-toast";
 
 type RegisterFormData = {
   name: string;
@@ -22,6 +24,7 @@ type RegisterFormData = {
 };
 
 const RegisterPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     email: "",
@@ -47,8 +50,15 @@ const RegisterPage = () => {
         password: formData.password,
       });
       console.log("From data", data, error);
+      if (error) {
+        toast.error("Login failed. Please check your credentials.");
+      } else if (!error) {
+        toast.success("Login successful! Redirecting...");
+        router.push("/");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Unexpected error during login");
     }
   };
 

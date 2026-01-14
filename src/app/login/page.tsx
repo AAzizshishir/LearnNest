@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 
 import { useState, ChangeEvent, FormEvent } from "react";
+import toast from "react-hot-toast";
 
 type RegisterFormData = {
   email: string;
@@ -45,18 +46,17 @@ const LoginPage = () => {
         password: formData.password,
         rememberMe: true,
       });
+      console.log(data);
 
       if (error) {
-        console.error("Login failed:", error.message || error);
-        return;
-      }
-
-      if (data?.redirect) {
-        console.log("Login successful:", data);
+        toast.error("Login failed. Please check your credentials.");
+      } else if (!error) {
+        toast.success("Login successful! Redirecting...");
         router.push("/");
       }
     } catch (err) {
       console.error("Unexpected error during login:", err);
+      toast.error("Unexpected error during login");
     }
   };
 
