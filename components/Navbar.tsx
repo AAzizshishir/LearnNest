@@ -107,11 +107,20 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center justify-center">
             <ModeToggle />
             {session ? (
               <>
-                <span>Welcome, {session.user.email}</span>
+                {session.user?.image && (
+                  <Image
+                    src={session.user?.image}
+                    alt={`${session.user?.name}'s profile`}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                    title={session.user.email}
+                  />
+                )}
                 <Button onClick={() => signOut()}>Logout</Button>
               </>
             ) : (
