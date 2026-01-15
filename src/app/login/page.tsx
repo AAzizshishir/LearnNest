@@ -1,5 +1,6 @@
 "use client";
 
+import AuthButtons from "@/components/AuthButtons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 
@@ -41,12 +43,12 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const { data, error } = await authClient.signIn.email({
+      // sign in with email
+      const { error } = await authClient.signIn.email({
         email: formData.email.trim(),
         password: formData.password,
         rememberMe: true,
       });
-      console.log(data);
 
       if (error) {
         toast.error("Login failed. Please check your credentials.");
@@ -97,11 +99,23 @@ const LoginPage = () => {
               />
             </div>
           </CardContent>
-          <CardFooter className="mt-2">
+          <CardFooter className="mt-4">
             <Button type="submit" className="w-full">
               Login
             </Button>
           </CardFooter>
+          <div className="flex items-center justify-center my-4 text-gray-500">
+            OR
+          </div>
+          {/* auth button */}
+          <AuthButtons />
+          {/* Already have account link */}
+          <p className="text-sm text-center text-gray-600">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="text-blue-600 hover:underline">
+              Register here
+            </Link>
+          </p>
         </form>
       </Card>
     </div>

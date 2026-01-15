@@ -1,5 +1,6 @@
 "use client";
 
+import AuthButtons from "@/components/AuthButtons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useState, ChangeEvent, FormEvent } from "react";
@@ -75,6 +77,8 @@ const RegisterPage = () => {
       console.log("From data", data, error);
       if (error) {
         toast.error("Login failed. Please check your credentials.");
+      } else if (!error) {
+        toast("Please verify your email. Check your inbox!");
       } else if (!error) {
         toast.success("Login successful! Redirecting...");
         router.push("/");
@@ -153,6 +157,18 @@ const RegisterPage = () => {
               Create Account
             </Button>
           </CardFooter>
+          <div className="flex items-center justify-center my-4 text-gray-500">
+            OR
+          </div>
+          {/* auth button */}
+          <AuthButtons />
+          {/* Already have account link */}
+          <p className="text-sm text-center text-gray-600">
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-600 hover:underline">
+              Login here
+            </Link>
+          </p>
         </form>
       </Card>
     </div>

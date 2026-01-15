@@ -114,7 +114,7 @@ const Navbar = ({
                 {session.user?.image && (
                   <Image
                     src={session.user?.image}
-                    alt={`${session.user?.name}'s profile`}
+                    alt="profile photo"
                     width={40}
                     height={40}
                     className="rounded-full"

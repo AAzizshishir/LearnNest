@@ -5,12 +5,8 @@ export const authClient = createAuthClient({
   baseURL: process.env.BASE_URL || "http://localhost:3000",
 });
 
-// await authClient.signOut({
-//   fetchOptions: {
-//     onSuccess: () => {
-//       router.push("/login"); // redirect to login page
-//     },
-//   },
+// await authClient.signIn.social({
+//   provider: "google",
 // });
 
 export const { signIn, signUp, signOut, useSession } = createAuthClient();
