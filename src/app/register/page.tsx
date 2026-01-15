@@ -42,11 +42,34 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("From form data", formData);
+
+    // Imgbb Image
+    const imageFile = new FormData();
+    if (formData.image) {
+      imageFile.append("image", formData.image);
+    }
+    const imgbbApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+      {
+        method: "POST",
+        body: imageFile,
+      }
+    );
+
+    const data = await res.json();
+    console.log("data", data);
+    let imageUrl: string | null = null;
+    if (data.success) {
+      imageUrl = data.data.url;
+    }
+    console.log("imageUrl", imageUrl);
+
     try {
       const { data, error } = await authClient.signUp.email({
         name: formData.name,
         email: formData.email,
+        image: imageUrl ?? undefined,
         password: formData.password,
       });
       console.log("From data", data, error);
@@ -113,7 +136,7 @@ const RegisterPage = () => {
               />
             </div>
             <div>
-              <Label htmlFor="image" className="mb-2">
+              <Label htmlFor="image" className="my-2">
                 Image
               </Label>
               <Input
@@ -125,7 +148,7 @@ const RegisterPage = () => {
               />
             </div>
           </CardContent>
-          <CardFooter className="mt-2">
+          <CardFooter className="mt-4">
             <Button type="submit" className="w-full">
               Create Account
             </Button>
