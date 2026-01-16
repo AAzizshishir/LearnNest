@@ -65,12 +65,12 @@ const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
     {
-      title: "Pricing",
-      url: "/pricing",
+      title: "Courses",
+      url: "/course",
     },
     {
-      title: "Blog",
-      url: "/blog",
+      title: "About Us",
+      url: "/about-us",
     },
   ],
   auth = {
@@ -81,7 +81,7 @@ const Navbar = ({
 }: Navbar1Props) => {
   const { data: session } = useSession();
   return (
-    <section className={cn("py-4", className)}>
+    <section className={`${cn("py-4", className)} bg-red-500`}>
       <div className="container mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
