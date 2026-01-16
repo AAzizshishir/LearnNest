@@ -1,10 +1,11 @@
 import Banner from "@/components/Banner";
+import TrendingCourses from "@/components/TrendingCourses";
 
 export default function Home() {
   return (
     <div className="">
       <Banner />
-      <h1>Welcome to LearnNest app</h1>
+      <TrendingCourses />
     </div>
   );
 }

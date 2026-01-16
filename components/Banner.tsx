@@ -15,7 +15,7 @@ const Banner = () => {
         "https://i.ibb.co.com/60WD5b6N/edtech-education-technology-distance-learning-260nw-1942997950.webp",
       title: "Learn Modern Web Development",
       description: "Master React, Next.js, and scalable architectures.",
-      link: "/courses/web-development",
+      link: "/web-development",
     },
     {
       image: "https://i.ibb.co.com/vNmd4Th/istockphoto-1462942852-612x612.jpg",
@@ -57,7 +57,7 @@ const Banner = () => {
                 </h2>
                 <p className="text-lg md:text-xl">{slide.description}</p>
                 <Link href={slide.link}>
-                  <Button variant="secondary" className="mt-4">
+                  <Button className="mt-4 bg-red-500 text-white hover:bg-red-600">
                     Explore Courses
                   </Button>
                 </Link>

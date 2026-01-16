@@ -66,7 +66,7 @@ const Navbar = ({
     { title: "Home", url: "/" },
     {
       title: "Courses",
-      url: "/course",
+      url: "/courses",
     },
     {
       title: "About Us",
